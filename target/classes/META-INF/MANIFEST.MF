@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Built-By: bluecreator(qiang.x.wang@gmail.com)
-Build-Jdk: 1.8.0_131
-Created-By: Maven Integration for Eclipse
-
