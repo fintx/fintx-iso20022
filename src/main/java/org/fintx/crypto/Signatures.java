@@ -26,6 +26,8 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 /**
+ * ##Signature: initialized with keys, these are used to sign data and verify digital signatures.
+ * 
  * @author bluecreator(qiang.x.wang@gmail.com)
  *
  */

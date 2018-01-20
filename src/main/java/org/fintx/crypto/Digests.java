@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 
 /**
+ * ##MessageDigest: used to calculate the message digest (hash) of specified data.
+ * 
  * @author bluecreator(qiang.x.wang@gmail.com)
  *
  */

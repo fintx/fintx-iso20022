@@ -15,13 +15,15 @@
  */
 package org.fintx.crypto;
 
-
 import java.security.Key;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 
 /**
+ * ##Message Authentication Codes (MAC): like MessageDigests, these also generate hash values, but are first initialized with keys to protect the integrity of
+ * messages.
+ * 
  * @author bluecreator(qiang.x.wang@gmail.com)
  *
  */

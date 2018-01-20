@@ -23,9 +23,13 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
 /**
+ * ##Cipher: initialized with keys, these are used for encrypting/decrypting data. There are various types of algorithms: symmetric bulk encryption (e.g. AES),
+ * asymmetric encryption (e.g. RSA), and password-based encryption (e.g. PBE).
+ * 
  * @author bluecreator(qiang.x.wang@gmail.com)
  *
  */
+//TODO add methods to support string data
 public class Ciphers {
     private Ciphers() {
         throw new AssertionError("No Ciphers instance for you!");

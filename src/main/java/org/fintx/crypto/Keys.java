@@ -17,6 +17,8 @@ package org.fintx.crypto;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -32,6 +34,22 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
+ * ##KeyFactory: used to convert existing opaque cryptographic keys of type Key into key specifications (transparent representations of the underlying key
+ * material), and vice versa. 
+ * ##SecretKeyFactory: used to convert existing opaque cryptographic keys of type SecretKey into key specifications (transparent
+ * representations of the underlying key material), and vice versa. SecretKeyFactorys are specialized KeyFactorys that create secret (symmetric) keys only.
+ * ##KeyPairGenerator: used to generate a new pair of public and private keys suitable for use with a specified algorithm. 
+ * ##KeyGenerator: used to generate new secret keys for use with a specified algorithm. 
+ * ##KeyAgreement: used by two or more parties to agree upon and establish a specific key to use for a particular cryptographic operation. 
+ * ##AlgorithmParameters: used to store the parameters for a particular algorithm, including parameter encoding and decoding.
+ * ##AlgorithmParameterGenerator : used to generate a set of AlgorithmParameters suitable for a specified algorithm. 
+ * ##KeyStore: used to create and manage a keystore. A keystore is a database of keys. Private keys in a keystore have a certificate chain associated with them, which authenticates the
+ * corresponding public key. A keystore also contains certificates from trusted entities.
+ * ##CertificateFactory: used to create public key certificates and Certificate Revocation Lists (CRLs). 
+ * ##CertPathBuilder: used to build certificate chains (also known as certification paths). 
+ * ##CertPathValidator: used to validate certificate chains. 
+ * ##CertStore: used to retrieve Certificates and CRLs from a repository.
+ * 
  * @author bluecreator(qiang.x.wang@gmail.com)
  *
  */
@@ -39,26 +57,30 @@ public class Keys {
     private Keys() {
         throw new AssertionError("No Keys instances for you!");
     }
+    
+    public SecretKey generateSecretKey(int size, byte[] seed, Ciphers.SymmetricAlgorithm algorithm) {
+        //TODO 检查算法是否支持
+        return generateSecretKey(size, seed, algorithm.getCode());
+    }
 
-    public SecretKey generateSecretKey(int size, byte[] seed, String algorithm) {
-       
+    private SecretKey generateSecretKey(int size, byte[] seed, String algorithm) {
+
         try {
-            //1.构造密钥生成器，指定为AES算法,不区分大小写
+            // 1.构造密钥生成器，指定为AES算法,不区分大小写
             KeyGenerator keygen = KeyGenerator.getInstance(algorithm);
-          //2.根据ecnodeRules规则初始化密钥生成器
-            //生成一个128位的随机源,根据传入的字节数组
+            // 2.根据ecnodeRules规则初始化密钥生成器
+            // 生成一个128位的随机源,根据传入的字节数组
             if (null == seed) {
                 keygen.init(size);
             } else {
                 keygen.init(size, new SecureRandom(seed));
             }
 
-            //3.产生原始对称密钥
+            // 3.产生原始对称密钥
             return keygen.generateKey();
-            //4.获得原始对称密钥的字节数组
+            // 4.获得原始对称密钥的字节数组
             // return original_key.getEncoded();
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
     }
@@ -70,10 +92,23 @@ public class Keys {
     private static SecretKey getSecretKey(byte[] raw, String algorithm) {
         return new SecretKeySpec(raw, algorithm);
     }
-    
+
     public static SecretKey getSecretKey(KeyStore ks, String alias, String password) throws Exception, NoSuchAlgorithmException {
         // 获得对称密钥
         return (SecretKey) ks.getKey(alias, password.toCharArray());
+    }
+    
+    public static KeyPair generateKeyPair(Ciphers.AsymmetricAlgorithm algorithm) {
+        //TODO 检查算法是否支持
+        try {
+            KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(algorithm.getCode());
+            keyPairGen.initialize(1024);  
+            return keyPairGen.generateKeyPair();  
+        } catch (NoSuchAlgorithmException e) {
+         // TODO Auto-generated catch block
+            throw new RuntimeException(e);
+        }  
+       
     }
 
     /**
